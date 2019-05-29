@@ -12,7 +12,7 @@ namespace TeduShop.Model.Models
         public long PostId { get; set; }
 
         [Key]
-        [Column(Order = 1, TypeName = "varchar")]
+        [Column(Order = 2, TypeName = "varchar")]
         [MaxLength(50)]
         public string TagId { get; set; }
 

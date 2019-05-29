@@ -8,7 +8,7 @@ namespace TeduShop.Model.Models
     public class Tag : Auditable
     {
         [Key]
-        [MaxLength(256)]
+        [MaxLength(50)]
         [Column(TypeName = "varchar")]
         public string Id { get; set; }
 
