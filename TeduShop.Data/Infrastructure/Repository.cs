@@ -21,40 +21,40 @@ namespace TeduShop.Data.Infrastructure
             DbFactory = dbFactory;
             _dbSet = DbContext.Set<T>();
         }
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             return _dbSet.Add(entity);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _dbSet.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public T Delete(T entity)
+        public virtual T Delete(T entity)
         {
             return _dbSet.Remove(entity);
         }
 
-        public T Delete(int id)
+        public virtual T Delete(int id)
         {
             var entity = _dbSet.Find(id);
             return _dbSet.Remove(entity ?? throw new InvalidOperationException());
         }
 
-        public void DeleteMulti(Expression<Func<T, bool>> expression)
+        public virtual void DeleteMulti(Expression<Func<T, bool>> expression)
         {
             IEnumerable<T> objects = _dbSet.Where(expression).AsEnumerable();
             _dbSet.RemoveRange(objects);
         }
 
-        public T GetSingleById(int id)
+        public virtual T GetSingleById(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null)
+        public virtual T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null)
         {
             if (includes != null && includes.Any())
             {
@@ -66,7 +66,7 @@ namespace TeduShop.Data.Infrastructure
             return _dbSet.FirstOrDefault(expression);
         }
 
-        public IEnumerable<T> GetAll(string[] includes = null)
+        public virtual IEnumerable<T> GetAll(string[] includes = null)
         {
             if (includes != null && includes.Any())
             {
@@ -79,7 +79,7 @@ namespace TeduShop.Data.Infrastructure
             return _dbSet.AsEnumerable();
         }
 
-        public IEnumerable<T> GetMulti(Expression<Func<T, bool>> expression, string[] includes = null)
+        public virtual IEnumerable<T> GetMulti(Expression<Func<T, bool>> expression, string[] includes = null)
         {
             //HANDLE INCLUDES FOR ASSOCIATED OBJECTS IF APPLICABLE
             if (includes != null && includes.Any())
@@ -93,7 +93,7 @@ namespace TeduShop.Data.Infrastructure
             return _dbSet.Where(expression).AsEnumerable();
         }
 
-        public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, out int total, int index = 0, int size = 50,
+        public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, out int total, int index = 0, int size = 50,
             string[] includes = null)
         {
             int skipCount = index * size;
@@ -118,12 +118,12 @@ namespace TeduShop.Data.Infrastructure
             return enumerable.AsEnumerable();
         }
 
-        public int Count(Expression<Func<T, bool>> expression)
+        public virtual int Count(Expression<Func<T, bool>> expression)
         {
             return _dbSet.Count(expression);
         }
 
-        public bool CheckContains(Expression<Func<T, bool>> expression)
+        public virtual bool CheckContains(Expression<Func<T, bool>> expression)
         {
             return _dbSet.Count(expression) > 0;
         }

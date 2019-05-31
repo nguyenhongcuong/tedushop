@@ -9,6 +9,7 @@ namespace TeduShop.Service.Services
     public interface IPostService : IEntityService<Post>
     {
         IEnumerable<Post> Get(string tag, int index, int size, out int totalRow);
+        IEnumerable<Post> Get(int categoryId, int index, int size, out int totalRow);
     }
     public class PostService : EntityService<Post>, IPostService
     {
@@ -22,13 +23,13 @@ namespace TeduShop.Service.Services
 
         public IEnumerable<Post> Get(string tag, int index, int size, out int totalRow)
         {
-            return _repository.GetMultiPaging(x => x.Status, out totalRow, index, size);
+            return _repository.GetAllByTag(tag, index, size, out totalRow);
         }
 
-        public override IEnumerable<Post> Get(string[] includes)
+        public IEnumerable<Post> Get(int categoryId, int index, int size, out int totalRow)
         {
-            return base.Get(new[] { "PostCategory" });
+            return _repository.GetMultiPaging(x => x.Status && x.CategoryId == categoryId, out totalRow, index, size,
+                new[] {"PostCategory"});
         }
-
     }
 }
