@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
 using TeduShop.Model.Models;
 using TeduShop.Service.Services;
 using TeduShop.Web.Infrastructure.Core;
+using TeduShop.Web.Infrastructure.Extensions;
+using TeduShop.Web.Models;
 
 namespace TeduShop.Web.Api
 {
@@ -17,13 +21,15 @@ namespace TeduShop.Web.Api
             _postCategoryService = postCategoryService;
         }
 
-        public HttpResponseMessage Post(HttpRequestMessage request, PostCategory postCategory)
+        public HttpResponseMessage Post(HttpRequestMessage request, PostCategoryViewModel postCategoryViewModel)
         {
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response;
                 if (ModelState.IsValid)
                 {
+                    PostCategory postCategory = new PostCategory();
+                    postCategory.UpdatePostCategory(postCategoryViewModel);
                     PostCategory result = _postCategoryService.Add(postCategory);
                     _postCategoryService.Commit();
                     response = request.CreateResponse(HttpStatusCode.Created, result);
@@ -36,13 +42,15 @@ namespace TeduShop.Web.Api
             });
         }
 
-        public HttpResponseMessage Put(HttpRequestMessage request, PostCategory postCategory)
+        public HttpResponseMessage Put(HttpRequestMessage request, PostCategoryViewModel postCategoryViewModel)
         {
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response;
                 if (ModelState.IsValid)
                 {
+                    PostCategory postCategory = new PostCategory();
+                    postCategory.UpdatePostCategory(postCategoryViewModel);
                     _postCategoryService.Update(postCategory);
                     _postCategoryService.Commit();
                     response = request.CreateResponse(HttpStatusCode.OK, postCategory);
@@ -83,8 +91,9 @@ namespace TeduShop.Web.Api
                 HttpResponseMessage response;
                 if (ModelState.IsValid)
                 {
-                    System.Collections.Generic.IEnumerable<PostCategory> result = _postCategoryService.Get();
-                    response = request.CreateResponse(HttpStatusCode.OK, result.ToList());
+                    IEnumerable<PostCategory> result = _postCategoryService.Get();
+                    IEnumerable<PostCategoryViewModel> resultViewModel = Mapper.Map<IEnumerable<PostCategoryViewModel>>(result);
+                    response = request.CreateResponse(HttpStatusCode.OK, resultViewModel.ToList());
                 }
                 else
                 {
