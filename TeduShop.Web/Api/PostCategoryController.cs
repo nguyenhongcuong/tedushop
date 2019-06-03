@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
 using TeduShop.Model.Models;
@@ -16,32 +17,82 @@ namespace TeduShop.Web.Api
             _postCategoryService = postCategoryService;
         }
 
-        public HttpResponseMessage Post(PostCategory postCategory)
+        public HttpResponseMessage Post(HttpRequestMessage request, PostCategory postCategory)
         {
-            PostCategory result = _postCategoryService.Add(postCategory);
-            _postCategoryService.Commit();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response;
+                if (ModelState.IsValid)
+                {
+                    PostCategory result = _postCategoryService.Add(postCategory);
+                    _postCategoryService.Commit();
+                    response = request.CreateResponse(HttpStatusCode.Created, result);
+                }
+                else
+                {
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                return response;
+            });
         }
 
-        public HttpResponseMessage Put(PostCategory postCategory)
+        public HttpResponseMessage Put(HttpRequestMessage request, PostCategory postCategory)
         {
-            _postCategoryService.Update(postCategory);
-            _postCategoryService.Commit();
-            return Request.CreateResponse(HttpStatusCode.OK, postCategory);
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response;
+                if (ModelState.IsValid)
+                {
+                    _postCategoryService.Update(postCategory);
+                    _postCategoryService.Commit();
+                    response = request.CreateResponse(HttpStatusCode.OK, postCategory);
+                }
+                else
+                {
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                return response;
+            });
         }
 
-        public HttpResponseMessage Delete(PostCategory postCategory)
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
-            _postCategoryService.Add(postCategory);
-            _postCategoryService.Commit();
-            return Request.CreateResponse(HttpStatusCode.OK);
+
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response;
+                if (ModelState.IsValid)
+                {
+                    _postCategoryService.Delete(id);
+                    _postCategoryService.Commit();
+                    response = request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                return response;
+            });
         }
 
         [Route("getall")]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get(HttpRequestMessage request)
         {
-            System.Collections.Generic.IEnumerable<PostCategory> result = _postCategoryService.Get();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response;
+                if (ModelState.IsValid)
+                {
+                    System.Collections.Generic.IEnumerable<PostCategory> result = _postCategoryService.Get();
+                    response = request.CreateResponse(HttpStatusCode.OK, result.ToList());
+                }
+                else
+                {
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                return response;
+            });
         }
+
     }
 }
