@@ -183,6 +183,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,6 +208,8 @@
     <Content Include="Content\Basic\Site.css" />
     <Content Include="Scripts\Basic\bootstrap.js" />
     <Content Include="Scripts\Basic\bootstrap.min.js" />
+    <Content Include="bower.json" />
+    <Content Include=".bowerrc" />
     <None Include="Scripts\Basic\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Basic\jquery-3.3.1.js" />
     <Content Include="Scripts\Basic\jquery-3.3.1.min.js" />
@@ -218,6 +221,10 @@
     <Content Include="Scripts\Basic\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\Basic\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Basic\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Plugins\angular\angular-csp.css" />
+    <Content Include="Scripts\Plugins\angular\angular.js" />
+    <Content Include="Scripts\Plugins\angular\angular.min.js" />
+    <Content Include="Scripts\Plugins\angular\index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -232,12 +239,19 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\Plugins\angular\.bower.json" />
+    <Content Include="Scripts\Plugins\angular\angular.min.js.gzip" />
+    <Content Include="Scripts\Plugins\angular\angular.min.js.map" />
+    <Content Include="Scripts\Plugins\angular\bower.json" />
+    <Content Include="Scripts\Plugins\angular\LICENSE.md" />
+    <Content Include="Scripts\Plugins\angular\package.json" />
+    <Content Include="Scripts\Plugins\angular\README.md" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Admin\" />
     <Folder Include="Content\Client\" />
-    <Folder Include="Scripts\Plugins\" />
     <Folder Include="Scripts\Spa\" />
   </ItemGroup>
   <ItemGroup>
